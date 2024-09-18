@@ -1,0 +1,3 @@
+C:/Users/johnp/Desktop/tarea #2/cmake-build-debug/CMakeFiles/tarea__2.dir
+C:/Users/johnp/Desktop/tarea #2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/johnp/Desktop/tarea #2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
