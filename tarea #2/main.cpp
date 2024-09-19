@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <chrono>
-#include <gtkmm.h>
+
 
 // Estructuras de datos y algoritmos de ordenamiento
 class BubbleSort {
@@ -77,6 +77,208 @@ public:
     }
 };
 
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* left;
+    Node* right;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head;
+    Node* tail;
+    int size;
+
+public:
+    LinkedList() {
+        head = nullptr;
+        tail = nullptr;
+        size = 0;
+    }
+
+    ~LinkedList() {
+        while (head != nullptr) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    void insert(int value) {
+        Node* newNode = new Node(value);
+
+        if (head == nullptr) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+
+        size++;
+    }
+
+    bool search(int value) {
+        Node* temp = head;
+
+        while (temp != nullptr) {
+            if (temp->data == value) {
+                return true;
+            }
+            temp = temp->next;
+        }
+
+        return false;
+    }
+
+    void remove(int value) {
+        if (head == nullptr) {
+            return;
+        }
+
+        if (head->data == value) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+            size--;
+            return;
+        }
+
+        Node* temp = head;
+
+        while (temp->next != nullptr) {
+            if (temp->next->data == value) {
+                Node* nodeToRemove = temp->next;
+                temp->next = temp->next->next;
+                delete nodeToRemove;
+                size--;
+                return;
+            }
+            temp = temp->next;
+        }
+    }
+
+    void printList() {
+        Node* temp = head;
+
+        while (temp != nullptr) {
+            std::cout << temp->data << " ";
+            temp = temp->next;
+        }
+
+        std::cout << std::endl;
+    }
+
+    int getSize() {
+        return size;
+    }
+};
+
+class BinarySearchTree {
+private:
+    Node* root;
+
+public:
+    BinarySearchTree() {
+        root = nullptr;
+    }
+
+    ~BinarySearchTree() {
+        destroyTree(root);
+    }
+
+    void insert(int value) {
+        root = insertNode(root, value);
+    }
+
+    bool search(int value) {
+        return searchNode(root, value);
+    }
+
+    void inorderTraversal() {
+        inorderTraversalNode(root);
+    }
+
+    void preorderTraversal() {
+        preorderTraversalNode(root);
+    }
+
+    void postorderTraversal() {
+        postorderTraversalNode(root);
+    }
+
+private:
+    Node* insertNode(Node* node, int value) {
+        if (node == nullptr) {
+            return new Node(value);
+        }
+
+        if (value < node->data) {
+            node->left = insertNode(node->left, value);
+        } else if (value > node->data) {
+            node->right = insertNode(node->right, value);
+        }
+
+        return node;
+    }
+
+    bool searchNode(Node* node, int value) {
+        if (node == nullptr) {
+            return false;
+        }
+
+        if (value == node->data) {
+            return true;
+        }
+
+        if (value < node->data) {
+            return searchNode(node->left, value);
+        } else {
+            return searchNode(node->right, value);
+        }
+    }
+
+    void inorderTraversalNode(Node* node) {
+        if (node != nullptr) {
+            inorderTraversalNode(node->left);
+            std::cout << node->data << " ";
+            inorderTraversalNode(node->right);
+        }
+    }
+
+    void preorderTraversalNode(Node* node) {
+        if (node != nullptr) {
+            std::cout << node->data << " ";
+            preorderTraversalNode(node->left);
+            preorderTraversalNode(node->right);
+        }
+    }
+
+    void postorderTraversalNode(Node* node) {
+        if (node != nullptr) {
+            postorderTraversalNode(node->left);
+            postorderTraversalNode(node->right);
+            std::cout << node->data << " ";
+        }
+    }
+
+    void destroyTree(Node* node) {
+        if (node != nullptr) {
+            destroyTree(node->left);
+            destroyTree(node->right);
+            delete node;
+        }
+    }
+};
 
 // Medición del tiempo de ejecución
 void measureTime(std::vector<int>& arr, BubbleSort& bubbleSort) {
@@ -84,7 +286,7 @@ void measureTime(std::vector<int>& arr, BubbleSort& bubbleSort) {
     bubbleSort.sort(arr);
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "Tiempo de ejecución de BubbleSort: " << duration.count() << " microsegundos" << std::endl;
+    std::cout << "Tempo ejection de BubbleSort: " << duration.count() << " microseconds" << std::endl;
 }
 
 void measureTime(std::vector<int>& arr, SelectionSort& selectionSort) {
@@ -92,7 +294,7 @@ void measureTime(std::vector<int>& arr, SelectionSort& selectionSort) {
     selectionSort.sort(arr);
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "Tiempo de ejecución de SelectionSort: " << duration.count() << " microsegundos" << std::endl;
+    std::cout << "Tempo ejection SelectionSort: " << duration.count() << " microseconds" << std::endl;
 }
 
 void measureTime(std::vector<int>& arr, MergeSort& mergeSort) {
@@ -100,7 +302,7 @@ void measureTime(std::vector<int>& arr, MergeSort& mergeSort) {
     mergeSort.sort(arr);
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "Tiempo de ejecución de MergeSort: " << duration.count() << " microsegundos" << std::endl;
+    std::cout << "Tempo ejection MergeSort: " << duration.count() << " microseconds" << std::endl;
 }
 
 // Generación de gráficas
@@ -123,14 +325,34 @@ int main() {
     MergeSort mergeSort;
     LinkedList linkedList;
     BinarySearchTree binarySearchTree;
+    binarySearchTree.insert(20);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(15);
+    linkedList.insert(5);
+    linkedList.insert(10);
+    linkedList.insert(15);
+    linkedList.printList();
 
     // Creación de un vector de enteros para realizar las pruebas
-    std::vector<int> arr(1000);
+    std::vector<int> arr(10000);
+    std::vector<int> arr1(1000);
+    std::vector<int> arr2(100);
 
     // Medición del tiempo de ejecución para cada algoritmo de ordenamiento
+    std::cout << "per case:" << std::endl;
     measureTime(arr, bubbleSort);
     measureTime(arr, selectionSort);
     measureTime(arr, mergeSort);
+
+    std::cout << "case Prompted" << std::endl;
+    measureTime(arr1, bubbleSort);
+    measureTime(arr1, selectionSort);
+    measureTime(arr1, mergeSort);
+
+    std::cout << "major case:" << std::endl;
+    measureTime(arr2, bubbleSort);
+    measureTime(arr2, selectionSort);
+    measureTime(arr2, mergeSort);
 
     // Generación de gráficas para cada algoritmo de ordenamiento
     generateGraph(arr, bubbleSort);
