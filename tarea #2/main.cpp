@@ -305,6 +305,22 @@ void measureTime(std::vector<int>& arr, MergeSort& mergeSort) {
     std::cout << "Tempo ejection MergeSort: " << duration.count() << " microseconds" << std::endl;
 }
 
+void measureTime1(int input ,LinkedList& LinkedList) {
+    auto start = std::chrono::high_resolution_clock::now();
+    LinkedList.search(input);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "Tempo ejection LinkedList: " << duration.count() << " microseconds" << std::endl;
+}
+
+void measureTime2(int input,BinarySearchTree& binarySearchTree) {
+    auto start = std::chrono::high_resolution_clock::now();
+    binarySearchTree.search(input);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "Tempo ejection BinarySearchTree: " << duration.count() << " microseconds" << std::endl;
+}
+
 // Generación de gráficas
 void generateGraph(std::vector<int>& arr, BubbleSort& bubbleSort) {
     // Implementación de la generación de la gráfica para BubbleSort
@@ -325,34 +341,41 @@ int main() {
     MergeSort mergeSort;
     LinkedList linkedList;
     BinarySearchTree binarySearchTree;
-    binarySearchTree.insert(20);
-    binarySearchTree.insert(10);
-    binarySearchTree.insert(15);
-    linkedList.insert(5);
-    linkedList.insert(10);
-    linkedList.insert(15);
-    linkedList.printList();
+
+
+
 
     // Creación de un vector de enteros para realizar las pruebas
     std::vector<int> arr(10000);
     std::vector<int> arr1(1000);
     std::vector<int> arr2(100);
+    for (int i = 0; i < 10000; i++) {
+        binarySearchTree.insert(i);
+        linkedList.insert(i);
+    }
+
 
     // Medición del tiempo de ejecución para cada algoritmo de ordenamiento
     std::cout << "per case:" << std::endl;
     measureTime(arr, bubbleSort);
     measureTime(arr, selectionSort);
     measureTime(arr, mergeSort);
+    measureTime1(9999,linkedList);
+    measureTime2(9999,binarySearchTree);
 
     std::cout << "case Prompted" << std::endl;
     measureTime(arr1, bubbleSort);
     measureTime(arr1, selectionSort);
     measureTime(arr1, mergeSort);
+    measureTime1(5000,linkedList);
+    measureTime2(5000,binarySearchTree);
 
     std::cout << "major case:" << std::endl;
     measureTime(arr2, bubbleSort);
     measureTime(arr2, selectionSort);
     measureTime(arr2, mergeSort);
+    measureTime1(100,linkedList);
+    measureTime2(100,binarySearchTree);
 
     // Generación de gráficas para cada algoritmo de ordenamiento
     generateGraph(arr, bubbleSort);
